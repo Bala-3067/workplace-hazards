@@ -1,0 +1,29 @@
+@import "tailwindcss";
+
+/* ─── Print styles ──────────────────────────────────────────────────────────
+   When the user triggers Print from My Reports, hide everything except the
+   report table. The browser renders the page without sidebar, topbar, filters,
+   and action buttons.
+   ─────────────────────────────────────────────────────────────────────────── */
+@media print {
+  /* Hide navigation chrome and controls */
+  aside,
+  header,
+  [data-noprint] {
+    display: none !important;
+  }
+
+  /* Let the main content fill the page */
+  body,
+  #root,
+  .print-full-width {
+    width: 100% !important;
+    overflow: visible !important;
+    height: auto !important;
+  }
+
+  /* Ensure table rows don't break across pages */
+  tr {
+    page-break-inside: avoid;
+  }
+}

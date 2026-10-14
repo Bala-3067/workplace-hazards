@@ -1,0 +1,172 @@
+[2026-10-14T04:02:37.930Z]  @firebase/firestore: Firestore (11.10.0): GrpcConnection RPC 'Write' stream 0x362913a4 error. Code: 7 Message: 7 PERMISSION_DENIED: 
+false for 'create' @ L25, false for 'create' @ L58, false for 'update' @ L25, evaluation error at L75:24 for 'update' @ L75, false for 'update' @ L25, false for 'update' @ L75
+▶ User profiles — create
+  ✖ allows creating own profile with role employee (110.5001ms)
+[2026-10-14T04:02:37.971Z]  @firebase/firestore: Firestore (11.10.0): GrpcConnection RPC 'Write' stream 0x362913a5 error. Code: 7 Message: 7 PERMISSION_DENIED: 
+false for 'create' @ L25, false for 'create' @ L58, false for 'update' @ L25, false for 'update' @ L75
+  ✔ rejects creating profile for a different uid (38.6028ms)
+[2026-10-14T04:02:38.009Z]  @firebase/firestore: Firestore (11.10.0): GrpcConnection RPC 'Write' stream 0x362913a6 error. Code: 7 Message: 7 PERMISSION_DENIED: 
+false for 'create' @ L25, false for 'create' @ L58, false for 'update' @ L25, evaluation error at L75:24 for 'update' @ L75, false for 'update' @ L25, false for 'update' @ L75
+  ✔ rejects role: officer on create (self-grant) (37.7158ms)
+[2026-10-14T04:02:38.077Z]  @firebase/firestore: Firestore (11.10.0): GrpcConnection RPC 'Write' stream 0x362913a7 error. Code: 7 Message: 7 PERMISSION_DENIED: 
+false for 'create' @ L25, false for 'create' @ L58, false for 'update' @ L25, Property role is undefined on object. for 'update' @ L75, false for 'update' @ L25, false for 'update' @ L75
+  ✔ rejects missing role field (68.4701ms)
+[2026-10-14T04:02:38.155Z]  @firebase/firestore: Firestore (11.10.0): GrpcConnection RPC 'Write' stream 0x362913a8 error. Code: 7 Message: 7 PERMISSION_DENIED: 
+false for 'create' @ L25, false for 'create' @ L58, false for 'update' @ L25, false for 'update' @ L75
+  ✔ rejects empty full_name (77.8227ms)
+[2026-10-14T04:02:38.226Z]  @firebase/firestore: Firestore (11.10.0): GrpcConnection RPC 'Write' stream 0x362913a9 error. Code: 7 Message: 7 PERMISSION_DENIED: 
+false for 'create' @ L25, false for 'create' @ L58, false for 'update' @ L25, false for 'update' @ L75
+  ✔ rejects empty email (69.2568ms)
+✖ User profiles — create (705.5982ms)
+[2026-10-14T04:02:38.289Z]  @firebase/firestore: Firestore (11.10.0): GrpcConnection RPC 'Write' stream 0x362913aa error. Code: 7 Message: 7 PERMISSION_DENIED: 
+false for 'update' @ L25, evaluation error at L75:24 for 'update' @ L75, false for 'update' @ L25, false for 'update' @ L75
+▶ User profiles — self-promotion prevention
+  ✔ employee cannot update own role to officer (62.2ms)
+[2026-10-14T04:02:38.356Z]  @firebase/firestore: Firestore (11.10.0): GrpcConnection RPC 'Write' stream 0x362913ab error. Code: 7 Message: 7 PERMISSION_DENIED: 
+false for 'update' @ L25, evaluation error at L75:24 for 'update' @ L75, false for 'update' @ L25, false for 'update' @ L75
+  ✔ employee cannot change created_at on update (66.7891ms)
+  ✔ unauthenticated cannot read any profile (120.7643ms)
+✔ User profiles — self-promotion prevention (252.3341ms)
+[2026-10-14T04:02:38.549Z]  @firebase/firestore: Firestore (11.10.0): GrpcConnection RPC 'Write' stream 0x362913ad error. Code: 7 Message: 7 PERMISSION_DENIED: 
+false for 'create' @ L25, evaluation error at L105:24 for 'create' @ L105, false for 'update' @ L25, evaluation error at L131:24 for 'update' @ L131, false for 'update' @ L25, false for 'update' @ L131
+▶ Hazard reports — valid create
+  ✖ employee can create a valid report (69.6417ms)
+✖ Hazard reports — valid create (71.2413ms)
+[2026-10-14T04:02:38.630Z]  @firebase/firestore: Firestore (11.10.0): GrpcConnection RPC 'Write' stream 0x362913ae error. Code: 7 Message: 7 PERMISSION_DENIED: 
+false for 'create' @ L25, false for 'create' @ L105, false for 'update' @ L25, evaluation error at L131:24 for 'update' @ L131, false for 'create' @ L25, false for 'create' @ L105
+▶ Hazard reports — field validation
+  ✔ rejects invalid category (92.5848ms)
+[2026-10-14T04:02:38.728Z]  @firebase/firestore: Firestore (11.10.0): GrpcConnection RPC 'Write' stream 0x362913af error. Code: 7 Message: 7 PERMISSION_DENIED: 
+false for 'create' @ L25, false for 'create' @ L105, false for 'update' @ L25, evaluation error at L131:24 for 'update' @ L131, false for 'create' @ L25, false for 'create' @ L105
+  ✔ rejects invalid severity (83.9417ms)
+[2026-10-14T04:02:38.806Z]  @firebase/firestore: Firestore (11.10.0): GrpcConnection RPC 'Write' stream 0x362913b0 error. Code: 7 Message: 7 PERMISSION_DENIED: 
+false for 'create' @ L25, false for 'create' @ L105, false for 'update' @ L25, evaluation error at L131:24 for 'update' @ L131, false for 'create' @ L25, false for 'create' @ L105
+  ✔ rejects non-Submitted initial status (76.6601ms)
+[2026-10-14T04:02:38.879Z]  @firebase/firestore: Firestore (11.10.0): GrpcConnection RPC 'Write' stream 0x362913b1 error. Code: 7 Message: 7 PERMISSION_DENIED: 
+false for 'create' @ L25, false for 'create' @ L105, false for 'update' @ L25, evaluation error at L131:24 for 'update' @ L131, false for 'create' @ L25, false for 'create' @ L105
+  ✔ rejects client-supplied display_id (74.003ms)
+[2026-10-14T04:02:38.957Z]  @firebase/firestore: Firestore (11.10.0): GrpcConnection RPC 'Write' stream 0x362913b2 error. Code: 7 Message: 7 PERMISSION_DENIED: 
+false for 'create' @ L25, false for 'create' @ L105, false for 'update' @ L25, evaluation error at L131:24 for 'update' @ L131, false for 'create' @ L25, false for 'create' @ L105
+  ✔ rejects reporter_id that differs from auth uid (impersonation) (77.5786ms)
+[2026-10-14T04:02:39.020Z]  @firebase/firestore: Firestore (11.10.0): GrpcConnection RPC 'Write' stream 0x362913b3 error. Code: 7 Message: 7 PERMISSION_DENIED: 
+false for 'create' @ L25, false for 'create' @ L105, false for 'update' @ L25, evaluation error at L131:24 for 'update' @ L131, false for 'create' @ L25, false for 'create' @ L105
+  ✔ rejects missing mandatory field (description) (62.1678ms)
+[2026-10-14T04:02:39.086Z]  @firebase/firestore: Firestore (11.10.0): GrpcConnection RPC 'Write' stream 0x362913b4 error. Code: 7 Message: 7 PERMISSION_DENIED: 
+false for 'create' @ L25, false for 'create' @ L105, false for 'update' @ L25, evaluation error at L131:24 for 'update' @ L131, false for 'create' @ L25, false for 'create' @ L105
+  ✔ rejects empty title (65.2037ms)
+[2026-10-14T04:02:39.153Z]  @firebase/firestore: Firestore (11.10.0): GrpcConnection RPC 'Write' stream 0x362913b5 error. Code: 7 Message: 7 PERMISSION_DENIED: 
+false for 'create' @ L25, false for 'create' @ L105, false for 'update' @ L25, evaluation error at L131:24 for 'update' @ L131, false for 'create' @ L25, false for 'create' @ L105
+  ✔ rejects string where timestamp expected (observed_at) (66.7939ms)
+✔ Hazard reports — field validation (601.8161ms)
+▶ Hazard reports — access control
+  ✔ employee A cannot read employee B's report (90.6144ms)
+[2026-10-14T04:02:39.313Z]  @firebase/firestore: Firestore (11.10.0): GrpcConnection RPC 'Write' stream 0x362913b7 error. Code: 7 Message: 7 PERMISSION_DENIED: 
+false for 'update' @ L25, evaluation error at L131:24 for 'update' @ L131, false for 'update' @ L25, false for 'update' @ L131
+  ✔ employee cannot update any report (68.3717ms)
+  ✔ officer can read any report (101.578ms)
+  ✔ officer can read another employee's report (84.0582ms)
+  ✔ officer can update status + updated_at (107.705ms)
+[2026-10-14T04:02:39.671Z]  @firebase/firestore: Firestore (11.10.0): GrpcConnection RPC 'Write' stream 0x362913bb error. Code: 7 Message: 7 PERMISSION_DENIED: 
+false for 'update' @ L25, evaluation error at L131:24 for 'update' @ L131, false for 'update' @ L25, false for 'update' @ L131
+  ✔ officer cannot change reporter_id (63.3195ms)
+[2026-10-14T04:02:39.727Z]  @firebase/firestore: Firestore (11.10.0): GrpcConnection RPC 'Write' stream 0x362913bc error. Code: 7 Message: 7 PERMISSION_DENIED: 
+false for 'update' @ L25, evaluation error at L131:24 for 'update' @ L131, false for 'update' @ L25, false for 'update' @ L131
+  ✔ officer cannot change created_at (56.5375ms)
+[2026-10-14T04:02:39.786Z]  @firebase/firestore: Firestore (11.10.0): GrpcConnection RPC 'Write' stream 0x362913bd error. Code: 7 Message: 7 PERMISSION_DENIED: 
+false for 'update' @ L25, evaluation error at L131:24 for 'update' @ L131, false for 'update' @ L25, false for 'update' @ L131
+  ✔ officer cannot change observed_at (58.3885ms)
+[2026-10-14T04:02:39.846Z]  @firebase/firestore: Firestore (11.10.0): GrpcConnection RPC 'Write' stream 0x362913be error. Code: 7 Message: 7 PERMISSION_DENIED: 
+false for 'update' @ L25, evaluation error at L131:24 for 'update' @ L131, false for 'update' @ L25, false for 'update' @ L131
+  ✔ officer cannot change title (60.0381ms)
+[2026-10-14T04:02:39.915Z]  @firebase/firestore: Firestore (11.10.0): GrpcConnection RPC 'Write' stream 0x362913bf error. Code: 7 Message: 7 PERMISSION_DENIED: 
+false for 'update' @ L25, evaluation error at L131:24 for 'update' @ L131, false for 'update' @ L25, false for 'update' @ L131
+  ✔ officer cannot change description (68.4362ms)
+[2026-10-14T04:02:39.995Z]  @firebase/firestore: Firestore (11.10.0): GrpcConnection RPC 'Write' stream 0x362913c0 error. Code: 7 Message: 7 PERMISSION_DENIED: 
+false for 'update' @ L25, evaluation error at L131:24 for 'update' @ L131, false for 'update' @ L25, false for 'update' @ L131
+  ✔ officer cannot change category (79.4875ms)
+[2026-10-14T04:02:40.056Z]  @firebase/firestore: Firestore (11.10.0): GrpcConnection RPC 'Write' stream 0x362913c1 error. Code: 7 Message: 7 PERMISSION_DENIED: 
+false for 'update' @ L25, evaluation error at L131:24 for 'update' @ L131, false for 'update' @ L25, false for 'update' @ L131
+  ✔ officer cannot change severity (60.1718ms)
+[2026-10-14T04:02:40.112Z]  @firebase/firestore: Firestore (11.10.0): GrpcConnection RPC 'Write' stream 0x362913c2 error. Code: 7 Message: 7 PERMISSION_DENIED: 
+false for 'delete' @ L25, false for 'delete' @ L155
+  ✔ officer cannot delete a report (56.0389ms)
+[2026-10-14T04:02:40.170Z]  @firebase/firestore: Firestore (11.10.0): GrpcConnection RPC 'Write' stream 0x362913c3 error. Code: 7 Message: 7 PERMISSION_DENIED: 
+false for 'delete' @ L25, false for 'delete' @ L155
+  ✔ employee cannot delete their own report (57.9384ms)
+  ✔ unauthenticated cannot read reports (57.9298ms)
+✔ Hazard reports — access control (1075.6898ms)
+[2026-10-14T04:02:40.281Z]  @firebase/firestore: Firestore (11.10.0): GrpcConnection RPC 'Write' stream 0x362913c5 error. Code: 7 Message: 7 PERMISSION_DENIED: 
+false for 'create' @ L25, evaluation error at L170:26 for 'create' @ L170, false for 'update' @ L25, false for 'update' @ L181, false for 'update' @ L25, false for 'update' @ L181
+▶ Notes — append-only
+  ✖ officer can create a note (52.1103ms)
+[2026-10-14T04:02:40.333Z]  @firebase/firestore: Firestore (11.10.0): GrpcConnection RPC 'Write' stream 0x362913c6 error. Code: 7 Message: 7 PERMISSION_DENIED: 
+false for 'create' @ L25, evaluation error at L170:26 for 'create' @ L170, false for 'update' @ L25, false for 'update' @ L181, false for 'create' @ L25, false for 'create' @ L170
+  ✔ employee cannot create a note (50.3556ms)
+[2026-10-14T04:02:40.369Z]  @firebase/firestore: Firestore (11.10.0): GrpcConnection RPC 'Write' stream 0x362913c7 error. Code: 7 Message: 7 PERMISSION_DENIED: 
+false for 'update' @ L25, false for 'update' @ L181
+  ✔ officer cannot update an existing note (36.3627ms)
+[2026-10-14T04:02:40.402Z]  @firebase/firestore: Firestore (11.10.0): GrpcConnection RPC 'Write' stream 0x362913c8 error. Code: 7 Message: 7 PERMISSION_DENIED: 
+false for 'delete' @ L25, false for 'delete' @ L181
+  ✔ officer cannot delete a note (32.7077ms)
+[2026-10-14T04:02:40.433Z]  @firebase/firestore: Firestore (11.10.0): GrpcConnection RPC 'Write' stream 0x362913c9 error. Code: 7 Message: 7 PERMISSION_DENIED: 
+false for 'delete' @ L25, false for 'delete' @ L181
+  ✔ employee cannot delete a note (31.3024ms)
+  ✔ unauthenticated cannot read notes (41.1753ms)
+✖ Notes — append-only (245.4192ms)
+▶ _counters — inaccessible to all clients
+  ✔ employee cannot read _counters (42.3717ms)
+  ✔ officer cannot read _counters (55.8384ms)
+  ✔ unauthenticated cannot read _counters (46.8249ms)
+[2026-10-14T04:02:40.654Z]  @firebase/firestore: Firestore (11.10.0): GrpcConnection RPC 'Write' stream 0x362913ce error. Code: 7 Message: 7 PERMISSION_DENIED: 
+false for 'create' @ L25, false for 'create' @ L187, false for 'update' @ L25, false for 'update' @ L187
+  ✔ employee cannot write _counters (32.4392ms)
+✔ _counters — inaccessible to all clients (178.5948ms)
+▶ Storage — uploads
+  ✔ employee can upload an image to their own folder (30.3253ms)
+  ✔ employee cannot upload to another employee's folder (16.0467ms)
+  ✔ unauthenticated cannot upload (13.7189ms)
+✔ Storage — uploads (60.7707ms)
+▶ Storage — reads
+  ✔ employee can read their own photo (11.1547ms)
+  ✔ employee cannot read another employee's photo (10.5031ms)
+  ✔ unauthenticated cannot read any photo (9.6164ms)
+✔ Storage — reads (32.0768ms)
+▶ Storage — deletes
+  ✔ employee cannot delete their own photo (14.3943ms)
+  ✔ officer cannot delete a photo (18.5522ms)
+✔ Storage — deletes (34.2805ms)
+ℹ tests 51
+ℹ suites 10
+ℹ pass 48
+ℹ fail 3
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 6646.1246
+
+✖ failing tests:
+
+test at tests\security-rules-enhanced.test.mjs:108:3
+✖ allows creating own profile with role employee (110.5001ms)
+  [Error [FirebaseError]: 7 PERMISSION_DENIED: 
+  false for 'create' @ L25, false for 'create' @ L58, false for 'update' @ L25, evaluation error at L75:24 for 'update' @ L75, false for 'update' @ L25, false for 'update' @ L75] {
+    code: 'permission-denied',
+    customData: undefined
+  }
+
+test at tests\security-rules-enhanced.test.mjs:190:3
+✖ employee can create a valid report (69.6417ms)
+  [Error [FirebaseError]: 7 PERMISSION_DENIED: 
+  false for 'create' @ L25, evaluation error at L105:24 for 'create' @ L105, false for 'update' @ L25, evaluation error at L131:24 for 'update' @ L131, false for 'update' @ L25, false for 'update' @ L131] {
+    code: 'permission-denied',
+    customData: undefined
+  }
+
+test at tests\security-rules-enhanced.test.mjs:358:3
+✖ officer can create a note (52.1103ms)
+  [Error [FirebaseError]: 7 PERMISSION_DENIED: 
+  false for 'create' @ L25, evaluation error at L170:26 for 'create' @ L170, false for 'update' @ L25, false for 'update' @ L181, false for 'update' @ L25, false for 'update' @ L181] {
+    code: 'permission-denied',
+    customData: undefined
+  }
+EXIT:1 

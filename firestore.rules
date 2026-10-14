@@ -1,0 +1,190 @@
+// firestore.rules
+//
+// DEFAULT POLICY: deny everything.
+// Access is granted only by explicit rules below.
+//
+// Design principles:
+//   1. No unauthenticated access to any collection.
+//   2. Role is read from the `users` collection, never from JWT claims.
+//   3. Users cannot write their own `role` field.
+//   4. Employees can only read/write their own reports.
+//   5. Officers can read and update all reports, but cannot delete them.
+//   6. Report notes are append-only (no update or delete).
+//   7. reporter_id on a new report must equal the caller's auth uid.
+//   8. display_id is set server-side; clients cannot supply it.
+//
+// IMPORTANT: These rules target the Firebase Emulator during Phase 3A.
+// They must be reviewed before deployment to production.
+
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // ── Deny everything by default ───────────────────────────────────────────
+    match /{document=**} {
+      allow read, write: if false;
+    }
+
+    // ── Helper functions ─────────────────────────────────────────────────────
+
+    function isAuth() {
+      return request.auth != null;
+    }
+
+    // Role helpers use get() with null-guard instead of exists() to avoid
+    // evaluation errors when called from allow create rules in the emulator.
+    function callerIsEmployee() {
+      return get(/databases/$(database)/documents/users/$(request.auth.uid)).data.get('role', null) == 'employee';
+    }
+
+    function callerIsOfficer() {
+      return get(/databases/$(database)/documents/users/$(request.auth.uid)).data.get('role', null) == 'officer';
+    }
+
+    // ── users collection ─────────────────────────────────────────────────────
+    match /users/{uid} {
+
+      // A user can read their own profile.
+      allow read: if isAuth() && request.auth.uid == uid;
+
+      // Officers can read any profile.
+      // Note: callerIsOfficer() here does NOT reference the document being
+      // read/written (different uid), so no circular reference.
+      allow read: if isAuth() && callerIsOfficer();
+
+      // A user can create their own profile ONLY during registration.
+      // role MUST be 'employee' — the rule rejects any other value.
+      // No callerIsEmployee/Officer check here: the user has no profile yet.
+      allow create: if isAuth()
+        && request.auth.uid == uid
+        && request.resource.data.role == 'employee'
+        && request.resource.data.keys().hasAll(
+             ['full_name', 'email', 'role', 'created_at', 'updated_at'])
+        && request.resource.data.full_name is string
+        && request.resource.data.full_name.size() > 0
+        && request.resource.data.email is string
+        && request.resource.data.email.size() > 0
+        && request.resource.data.created_at is timestamp
+        && request.resource.data.updated_at is timestamp
+        && (request.resource.data.department == null
+            || request.resource.data.department is string);
+
+      // A user can update their own profile but cannot change role or created_at.
+      // We deliberately do NOT call callerIsEmployee/Officer here to avoid a
+      // self-referential exists() on the document being written.
+      allow update: if isAuth()
+        && request.auth.uid == uid
+        && request.resource.data.role == resource.data.role
+        && request.resource.data.keys().hasOnly(
+             ['full_name', 'email', 'role', 'department', 'created_at', 'updated_at'])
+        && request.resource.data.full_name is string
+        && request.resource.data.full_name.size() > 0
+        && request.resource.data.email is string
+        && request.resource.data.email.size() > 0
+        && request.resource.data.email.matches('.*@.*')
+        && request.resource.data.created_at == resource.data.created_at
+        && request.resource.data.updated_at is timestamp
+        && (request.resource.data.department == null
+            || request.resource.data.department is string);
+
+      allow delete: if false;
+    }
+
+    // ── hazard_reports collection ────────────────────────────────────────────
+    match /hazard_reports/{reportId} {
+
+      // Employees can read only their own reports.
+      allow read: if isAuth()
+        && callerIsEmployee()
+        && resource.data.reporter_id == request.auth.uid;
+
+      // Officers can read all reports.
+      allow read: if isAuth() && callerIsOfficer();
+
+      // Employees and officers may create reports.
+      allow create: if isAuth()
+        && (callerIsEmployee() || callerIsOfficer())
+        && request.resource.data.reporter_id == request.auth.uid
+        && request.resource.data.status == 'Submitted'
+        && !('display_id' in request.resource.data)
+        && request.resource.data.keys().hasAll([
+             'title', 'description', 'location', 'category',
+             'severity', 'status', 'reporter_id',
+             'observed_at', 'created_at', 'updated_at'])
+        && request.resource.data.title is string
+        && request.resource.data.title.size() > 0
+        && request.resource.data.description is string
+        && request.resource.data.description.size() > 0
+        && request.resource.data.location is string
+        && request.resource.data.location.size() > 0
+        && request.resource.data.category is string
+        && request.resource.data.category in [
+             'Slips, Trips & Falls', 'Electrical Hazards', 'Machinery Hazards',
+             'Chemical Hazards', 'Fire Hazards', 'Ergonomics', 'Other Hazards']
+        && request.resource.data.severity is string
+        && request.resource.data.severity in ['Critical', 'High', 'Medium', 'Low']
+        && request.resource.data.observed_at is timestamp
+        && request.resource.data.created_at is timestamp
+        && request.resource.data.updated_at is timestamp;
+
+      // Officers may update only permitted fields; all seeded fields are frozen.
+      allow update: if isAuth()
+        && callerIsOfficer()
+        && request.resource.data.reporter_id  == resource.data.reporter_id
+        && request.resource.data.created_at   == resource.data.created_at
+        && request.resource.data.observed_at  == resource.data.observed_at
+        && request.resource.data.title        == resource.data.title
+        && request.resource.data.description  == resource.data.description
+        && request.resource.data.location     == resource.data.location
+        && request.resource.data.category     == resource.data.category
+        && request.resource.data.severity     == resource.data.severity
+        && ((!('display_id' in resource.data) && !('display_id' in request.resource.data))
+            || request.resource.data.get('display_id', null) == resource.data.get('display_id', null))
+        && request.resource.data.keys().hasOnly([
+             'title', 'description', 'location', 'category', 'severity',
+             'status', 'reporter_id', 'observed_at', 'created_at', 'updated_at',
+             'display_id', 'assigned_officer_id', 'resolution_notes'])
+        && request.resource.data.updated_at is timestamp
+        && request.resource.data.status is string
+        && request.resource.data.status in ['Submitted', 'Under Review', 'Resolved', 'Closed']
+        && (!('assigned_officer_id' in request.resource.data)
+            || request.resource.data.assigned_officer_id is string)
+        && (!('resolution_notes' in request.resource.data)
+            || request.resource.data.resolution_notes is string);
+
+      allow delete: if false;
+
+      // ── notes sub-collection ─────────────────────────────────────────────
+      match /notes/{noteId} {
+
+        // Employees can read notes on their own reports only.
+        allow read: if isAuth()
+          && callerIsEmployee()
+          && get(/databases/$(database)/documents/hazard_reports/$(reportId))
+               .data.reporter_id == request.auth.uid;
+
+        // Officers can read all notes.
+        allow read: if isAuth() && callerIsOfficer();
+
+        // Only officers may create notes; author_id must equal their UID.
+        allow create: if isAuth()
+          && callerIsOfficer()
+          && request.resource.data.author_id == request.auth.uid
+          && request.resource.data.keys().hasAll(
+               ['type', 'body', 'author_id', 'author_name', 'created_at'])
+          && request.resource.data.body is string
+          && request.resource.data.body.size() > 0
+          && request.resource.data.author_name is string
+          && request.resource.data.created_at is timestamp;
+
+        // Notes are append-only — no client may update or delete them.
+        allow update, delete: if false;
+      }
+    }
+
+    // ── _counters collection (server-managed only) ───────────────────────────
+    match /_counters/{document} {
+      allow read, write: if false;
+    }
+  }
+}
